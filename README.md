@@ -7,13 +7,14 @@ What's the deal with asyncio?
 Install
 -------
 
+aioseinfeld requires Python 3.7 or newer. It can be installed from PyPI:
+
 ```shell-session
 $ pip install aioseinfeld
 ```
 
-Depends on having a copy of the script database generated using 
+aioseinfeld also depends on having a copy of the script database generated using 
 [scripts by Colin Pollick](https://github.com/colinpollock/seinfeld-scripts).
-
 You can build your own copy using those scripts, or download a prebuilt copy with
 the following command:
 
