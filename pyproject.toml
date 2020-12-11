@@ -22,6 +22,9 @@ exclude = [
     ".github/",
 ]
 
+[tool.attribution]
+signed_tags = false
+
 [tool.coverage.run]
 branch = true
 include = ["aioseinfeld/*"]
