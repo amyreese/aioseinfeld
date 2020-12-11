@@ -3,7 +3,7 @@
 
 from aiounittest import AsyncTestCase
 
-from aioseinfeld import Seinfeld, Quote
+from aioseinfeld import Seinfeld, Quote, Passage
 
 DB = "seinfeld.db"
 
@@ -59,6 +59,69 @@ class SmokeTest(AsyncTestCase):
 
             quote = await seinfeld.quote(78)
             self.assertEqual(quote, expected)
+
+    async def test_passage(self):
+        async with Seinfeld(DB) as seinfeld:
+            episode = await seinfeld.episode(1)
+            jerry = await seinfeld.speaker("jerry")
+            george = await seinfeld.speaker("george")
+
+            expected = Passage(
+                id=78,
+                episode=episode,
+                quotes=[
+                    Quote(
+                        id=76,
+                        episode=episode,
+                        number=76,
+                        speaker=george,
+                        text=(
+                            "I know, I know. Listen, your stuff has to be done by now, "
+                            "why don't you just see if it's dry?"
+                        ),
+                    ),
+                    Quote(
+                        id=77,
+                        episode=episode,
+                        number=77,
+                        speaker=jerry,
+                        text=(
+                            "No no no, don't interrupt the cycle. The machine is "
+                            "working, it, it knows what it's doing. Just let it finish."
+                        ),
+                    ),
+                    Quote(
+                        id=78,
+                        episode=episode,
+                        number=78,
+                        speaker=george,
+                        text="You're gonna overdry it.",
+                    ),
+                    Quote(
+                        id=79,
+                        episode=episode,
+                        number=79,
+                        speaker=jerry,
+                        text="You, you can't overdry.",
+                    ),
+                    Quote(
+                        id=80,
+                        episode=episode,
+                        number=80,
+                        speaker=george,
+                        text="Why not?",
+                    ),
+                ],
+            )
+
+            seed = await seinfeld.quote(78)
+            passage = await seinfeld.passage(seed, length=5)
+
+            self.assertEqual(len(passage.quotes), len(expected.quotes))
+            for index, exp in enumerate(expected.quotes):
+                self.assertEqual(passage.quotes[index].speaker, exp.speaker)
+                self.assertEqual(passage.quotes[index].text, exp.text)
+            self.assertEqual(passage, expected)
 
     async def test_search_specific(self):
         async with Seinfeld(DB) as seinfeld:

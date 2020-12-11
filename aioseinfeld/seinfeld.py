@@ -197,7 +197,31 @@ class Seinfeld:
             return None
 
     async def passage(self, quote: Quote, length: int = 5) -> Passage:
-        pass
+        half = length // 2
+        middle = quote.number
+        start = middle - half if middle > half else 1
+        end = start + length - 1
+
+        query = """
+            select id, episode_id, utterance_number, speaker, text
+            from quote
+            where episode_id = ? and
+                utterance_number >= ? and utterance_number <= ?
+            order by utterance_number
+        """
+
+        async with self.db.execute(query, (quote.episode.id, start, end)) as cursor:
+            quotes = [
+                Quote(
+                    id=row["id"],
+                    episode=quote.episode,
+                    number=row["utterance_number"],
+                    speaker=await self.speaker(row["speaker"]),
+                    text=row["text"],
+                )
+                async for row in cursor
+            ]
+            return Passage(quote.id, quote.episode, quotes)
 
     async def search(
         self,
