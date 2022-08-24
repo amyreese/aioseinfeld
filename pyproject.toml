@@ -4,10 +4,10 @@ build-backend = "flit_core.buildapi"
 
 [tool.flit.metadata]
 module = "aioseinfeld"
-author = "John Reese"
-author-email = "john@noswap.com"
+author = "Amethyst Reese"
+author-email = "amy@noswap.com"
 description-file = "README.md"
-home-page = "https://github.com/jreese/aioseinfeld"
+home-page = "https://github.com/amyreese/aioseinfeld"
 requires = ["aiosqlite"]
 requires-python = ">=3.7"
 classifiers = [
